@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/menu_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".fragment.order.MenuFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/menu_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize" >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical">
+                <LinearLayout
+                    android:id="@+id/changeCategory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical">
+                    <LinearLayout
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:gravity="center"
+                        android:background="@drawable/shape_round"
+                        android:backgroundTint="#FFF4C2">
+
+                        <ImageView
+                            android:id="@+id/imageView5"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_weight="1"
+                            android:src="@drawable/icon_menu" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        android:text="Danh mục"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                    <ImageView
+                        android:id="@+id/comboArrow_category"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:rotation="90"
+                        android:src="@drawable/next"
+                        app:tint="@color/black" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:descendantFocusability="blocksDescendants">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:orientation="vertical">
+
+
+                <GridView
+                    android:id="@+id/category_gridview"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:layout_marginBottom="15dp"
+                    android:numColumns="4"
+                    android:verticalSpacing="20dp">
+
+                </GridView>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/menu_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="4600dp" />
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingVertical="8dp">
+
+            <LinearLayout
+                android:id="@+id/menu_ordermethod"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginRight="40dp"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:gravity="center_vertical">
+
+                    <LinearLayout
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:gravity="center"
+                        android:background="@drawable/shape_round"
+                        android:backgroundTint="#FFF4C2">
+                        <ImageView
+                            android:id="@+id/menu_methodImage"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_weight="1"
+                            android:src="@drawable/icon_delivery" />
+
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/menu_methodText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="5dp"
+                        android:text="Giao đến"/>
+                    <ImageView
+                        android:id="@+id/comboArrow"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:layout_weight="1"
+                        android:rotation="90"
+                        android:src="@drawable/next"
+                        app:tint="@color/black" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/menu_addressText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="Sản phẩm sẽ được giao đến địa chỉ bạn chọn"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/totalPrice"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/shape_white_rounded_medium"
+                android:backgroundTint="@color/primary"
+                android:gravity="center_vertical"
+                android:padding="10dp">
+
+                <LinearLayout
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/shape_round"
+                    android:backgroundTint="@color/white"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/numberOfItems"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:textColor="@color/primary" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/totalItemsPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:text="100.000đ"
+                    android:textColor="@color/white" />
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/next"
+                    app:tint="#FFFFFF" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.bottomappbar.BottomAppBar>
+
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

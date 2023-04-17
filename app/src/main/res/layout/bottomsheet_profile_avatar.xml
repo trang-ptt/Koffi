@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/avatar_bottomsheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:dividerPadding="15dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/openCam"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:text="Chụp ảnh mới" />
+    <TextView
+        android:id="@+id/openLibrary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:text="Chọn từ thư viện ảnh" />
+
+    <TextView
+        android:id="@+id/AvtarHuy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:text="Hủy" />
+</LinearLayout>

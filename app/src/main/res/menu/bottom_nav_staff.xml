@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title="Đơn hàng"
+        android:id="@+id/order"
+        android:icon="@drawable/icon_orders"/>
+    <item
+        android:title="Thống kê"
+        android:id="@+id/statistic"
+        android:icon="@drawable/icon_statistic"   />
+    <item
+        android:title="Thông tin"
+        android:id="@+id/profile"
+        android:icon="@drawable/icon_profile"   />
+</menu>

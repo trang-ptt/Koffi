@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bottomsheet_bg">
+    <LinearLayout
+        android:id="@+id/receiver_bottomsheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:paddingHorizontal="15dp">
+
+            <ImageButton
+                android:id="@+id/receiver_backBtn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:background="@android:color/transparent"
+                app:srcCompat="@drawable/icon_back" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Người nhận"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:padding="15dp"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="Tên người nhận*"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            <EditText
+                android:id="@+id/receiver_name"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Nhập tên"
+                android:inputType="textPersonName"
+                android:background="@drawable/edittext_profile"
+                android:padding="15dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="10dp"
+                android:text="Số điện thoại*"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            <EditText
+                android:id="@+id/receiver_phone"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Nhập số điện thoại"
+                android:inputType="number"
+                android:background="@drawable/edittext_profile"
+                android:padding="15dp"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/receiver_doneBtn"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_margin="15dp"
+            android:backgroundTint="@color/primary"
+            android:text="Xong"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            app:cornerRadius="10dp" />
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

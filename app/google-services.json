@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1053884085279",
+    "project_id": "koffi-7a5a8",
+    "storage_bucket": "koffi-7a5a8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1053884085279:android:e72908d6121c0db477512a",
+        "android_client_info": {
+          "package_name": "com.example.koffi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1053884085279-q3fj4mkhg8oli5o7b38d51grkgp59p8q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3CjHj9Up-SwkLvhNCLfVAO73y8GaNF_4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1053884085279-q3fj4mkhg8oli5o7b38d51grkgp59p8q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

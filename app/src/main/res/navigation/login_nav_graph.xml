@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_nav_graph"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/staffLoginFragment"
+        android:name="com.example.koffi.fragment.login.StaffLoginFragment"
+        android:label="fragment_staff_login"
+        tools:layout="@layout/fragment_staff_login" >
+        <action
+            android:id="@+id/action_staffLoginFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_staffLoginFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_staffLoginFragment_to_staffOrderFragment2"
+            app:destination="@id/staffOrderFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.koffi.fragment.login.LoginFragment"
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_staffLoginFragment"
+            app:destination="@id/staffLoginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.koffi.fragment.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/staffOrderFragment2"
+        android:name="com.example.koffi.fragment.staff.StaffOrderFragment"
+        android:label="fragment_staff_order"
+        tools:layout="@layout/fragment_staff_order" />
+</navigation>
