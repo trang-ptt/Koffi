@@ -1,4 +1,4 @@
-## Nhóm 5
+## Nhóm 2
 <h2 align="center">
     Đồ án Phát triển ứng dụng trên thiết bị di động</h2>
     <div align="center">
