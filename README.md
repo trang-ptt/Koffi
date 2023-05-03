@@ -54,7 +54,7 @@ Ta sử dụng IDE là Android Studio để chạy ứng dụng
 #### 2. Download Source Code
 Chạy dòng lệnh sau trên terminal để download:
    ```sh
-
+git clone https://github.com/trang-ptt/Koffi.git
    ```
 
 #### 3. Chạy chương trình
