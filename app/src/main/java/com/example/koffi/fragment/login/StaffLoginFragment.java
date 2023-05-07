@@ -112,20 +112,20 @@ public class StaffLoginFragment extends Fragment {
                 staffLogin.setVisibility(View.INVISIBLE);
                 String email = edtEmail.getText().toString().trim();
                 String password = edtPass.getText().toString().trim();
-                auth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(getContext(), "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-                                    Navigation.findNavController(view).navigate(R.id.action_staffLoginFragment_to_staffOrderFragment2);
-
-                                }
-                                else {
-                                    Toast.makeText(getContext(), "Đăng nhập thất bại!", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
+//                auth.signInWithEmailAndPassword(email, password)
+//                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<AuthResult> task) {
+//                                if (task.isSuccessful()) {
+//                                    Toast.makeText(getContext(), "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+//                                    Navigation.findNavController(view).navigate(R.id.action_staffLoginFragment_to_staffOrderFragment2);
+//
+//                                }
+//                                else {
+//                                    Toast.makeText(getContext(), "Đăng nhập thất bại!", Toast.LENGTH_SHORT).show();
+//                                }
+//                            }
+//                        });
             }
         });
     }

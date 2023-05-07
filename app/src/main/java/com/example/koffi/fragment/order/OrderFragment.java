@@ -32,6 +32,7 @@ import androidx.navigation.Navigation;
 import com.example.koffi.R;
 import com.example.koffi.adapter.CartItemAdapter;
 import com.example.koffi.models.CartItem;
+import com.example.koffi.models.Topping;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -158,11 +159,11 @@ public class OrderFragment extends Fragment {
         //Cart list
 
         //Sample data
-//        ArrayList<Topping> toppings = new ArrayList<Topping>();
-//        toppings.add(new Topping("123","Trân châu hoàng kim",6000L));
-//        cart.add(new CartItem("123","Cà phê",2,new Long(35000),"Upsize",toppings,"ít đường"));
-//        cart.add(new CartItem("123","Cà phê",2,new Long(35000),"Upsize",toppings,"ít đường"));
-//        cart.add(new CartItem("123","Cà phê",2,new Long(35000),"Upsize",toppings,"ít đường"));
+        ArrayList<Topping> toppings = new ArrayList<Topping>();
+        toppings.add(new Topping("123","Trân châu hoàng kim",6000L));
+        cart.add(new CartItem("123","Cà phê",2,new Long(35000),"Upsize",toppings,"ít đường"));
+        cart.add(new CartItem("123","Cà phê",2,new Long(35000),"Upsize",toppings,"ít đường"));
+        cart.add(new CartItem("123","Cà phê",2,new Long(35000),"Upsize",toppings,"ít đường"));
 
         ListView cartList = view.findViewById(R.id.order_cartList);
         CartItemAdapter cartAdapter = new CartItemAdapter(getContext(),cart,false);
@@ -178,160 +179,160 @@ public class OrderFragment extends Fragment {
         });
 
         db = FirebaseFirestore.getInstance();
-        if (cart.isEmpty())
-        db.collection("cartItems").whereEqualTo("cartID", orderID)
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    number = 0;
-                    for (QueryDocumentSnapshot snapshot : task.getResult()) {
-                        CartItem cartItem = snapshot.toObject(CartItem.class);
-                        cart.add(cartItem);
-                        number += cartItem.quantity;
-                    }
-                    tvNumber.setText("(" + number + " món)");
-                    cartAdapter.notifyDataSetChanged();
-                }
-            }
-        });
+//        if (cart.isEmpty())
+//        db.collection("cartItems").whereEqualTo("cartID", orderID)
+//                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    number = 0;
+//                    for (QueryDocumentSnapshot snapshot : task.getResult()) {
+//                        CartItem cartItem = snapshot.toObject(CartItem.class);
+//                        cart.add(cartItem);
+//                        number += cartItem.quantity;
+//                    }
+//                    tvNumber.setText("(" + number + " món)");
+//                    cartAdapter.notifyDataSetChanged();
+//                }
+//            }
+//        });
 
         //Listen to data change
-        db.collection("order").document(orderID)
-                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
-                        orderMethod = value.get("method", Integer.class);
-
-                        //Handle order method
-                        if (orderMethod == 1)
-                            handleTakeAway();
-
-                        switch (value.get("status", Integer.class)) {
-                            case 1:
-                                stateConfirm();
-                                break;
-                            case 2:
-                                imageView.setImageResource(R.drawable.image_status_prepare);
-                                confirm = value.getString("confirmTime");
-                                if (confirm != null && !confirm.isEmpty()) {
-                                    try {
-                                        Date date1 = df.parse(confirm);
-                                        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-                                        String dateStr = sdf.format(date1);
-                                        prepareTime.setText(dateStr);
-                                        statePrepare();
-                                    } catch (ParseException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                                break;
-                            case 3:
-                                if (orderMethod == 0) {
-                                    state.setText("Đang giao");
-                                    imageView.setImageResource(R.drawable.image_status_delivering);
-                                } else {
-                                    state.setText("Đã sẵn sàng");
-                                    imageView.setImageResource(R.drawable.image_status_ready);
-                                }
-                                confirm = value.getString("confirmTime");
-                                if (confirm != null && !confirm.isEmpty()) {
-                                    try {
-                                        Date date1 = df.parse(confirm);
-                                        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-                                        String dateStr = sdf.format(date1);
-                                        prepareTime.setText(dateStr);
-                                    } catch (ParseException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                                ready = value.getString("serveTime");
-                                if (ready != null && !ready.isEmpty()) {
-                                    try {
-                                        Date date1 = df.parse(ready);
-                                        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-                                        String dateStr = sdf.format(date1);
-                                        readyTime.setText(dateStr);
-                                        stateReady();
-                                    } catch (ParseException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                                break;
-                            case 4:
-                                state.setText("Đã hoàn thành");
-                                imageView.setImageResource(R.drawable.image_status_completed);
-                                confirm = value.getString("confirmTime");
-                                if (confirm != null && !confirm.isEmpty()) {
-                                    try {
-                                        Date date1 = df.parse(confirm);
-                                        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-                                        String dateStr = sdf.format(date1);
-                                        prepareTime.setText(dateStr);
-                                    } catch (ParseException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                                ready = value.getString("serveTime");
-                                if (ready != null && !ready.isEmpty()) {
-                                    try {
-                                        Date date1 = df.parse(ready);
-                                        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-                                        String dateStr = sdf.format(date1);
-                                        readyTime.setText(dateStr);
-                                    } catch (ParseException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                                completed = value.getString("deliTime");
-                                if (completed != null && !completed.isEmpty()) {
-                                    try {
-                                        Date date1 = df.parse(completed);
-                                        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-                                        String dateStr = sdf.format(date1);
-                                        completeTime.setText(dateStr);
-                                        stateComplete();
-                                    } catch (ParseException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                                break;
-                            case 5:
-                                cancel = value.getString("cancelTime");
-                                if (cancel != null && !cancel.isEmpty()) {
-                                    try {
-                                        Date date1 = df.parse(cancel);
-                                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-                                        String dateStr = sdf.format(date1);
-                                        AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
-                                        alert.setTitle("THÔNG BÁO!");
-                                        alert.setMessage("Đơn hàng của bạn đã bị hủy!\nLý do: " + value.get("deliveryNote") +
-                                                "\nĐơn hàng bị hủy lúc: \n" + dateStr);
-                                        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialogInterface, int i) {
-
-                                            }
-                                        });
-                                        alert.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                                            @Override
-                                            public void onDismiss(DialogInterface dialogInterface) {
-
-                                            }
-                                        });
-                                        AlertDialog dialog = alert.create();
-                                        dialog.show();
-                                        dialog.getButton(dialog.BUTTON_POSITIVE)
-                                                .setTextColor(Color.parseColor("#795C34"));
-                                    } catch (ParseException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                                break;
-                        }
-                    }
-                });
+//        db.collection("order").document(orderID)
+//                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+//                    @Override
+//                    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+//                        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+//                        orderMethod = value.get("method", Integer.class);
+//
+//                        //Handle order method
+//                        if (orderMethod == 1)
+//                            handleTakeAway();
+//
+//                        switch (value.get("status", Integer.class)) {
+//                            case 1:
+//                                stateConfirm();
+//                                break;
+//                            case 2:
+//                                imageView.setImageResource(R.drawable.image_status_prepare);
+//                                confirm = value.getString("confirmTime");
+//                                if (confirm != null && !confirm.isEmpty()) {
+//                                    try {
+//                                        Date date1 = df.parse(confirm);
+//                                        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+//                                        String dateStr = sdf.format(date1);
+//                                        prepareTime.setText(dateStr);
+//                                        statePrepare();
+//                                    } catch (ParseException e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                }
+//                                break;
+//                            case 3:
+//                                if (orderMethod == 0) {
+//                                    state.setText("Đang giao");
+//                                    imageView.setImageResource(R.drawable.image_status_delivering);
+//                                } else {
+//                                    state.setText("Đã sẵn sàng");
+//                                    imageView.setImageResource(R.drawable.image_status_ready);
+//                                }
+//                                confirm = value.getString("confirmTime");
+//                                if (confirm != null && !confirm.isEmpty()) {
+//                                    try {
+//                                        Date date1 = df.parse(confirm);
+//                                        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+//                                        String dateStr = sdf.format(date1);
+//                                        prepareTime.setText(dateStr);
+//                                    } catch (ParseException e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                }
+//                                ready = value.getString("serveTime");
+//                                if (ready != null && !ready.isEmpty()) {
+//                                    try {
+//                                        Date date1 = df.parse(ready);
+//                                        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+//                                        String dateStr = sdf.format(date1);
+//                                        readyTime.setText(dateStr);
+//                                        stateReady();
+//                                    } catch (ParseException e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                }
+//                                break;
+//                            case 4:
+//                                state.setText("Đã hoàn thành");
+//                                imageView.setImageResource(R.drawable.image_status_completed);
+//                                confirm = value.getString("confirmTime");
+//                                if (confirm != null && !confirm.isEmpty()) {
+//                                    try {
+//                                        Date date1 = df.parse(confirm);
+//                                        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+//                                        String dateStr = sdf.format(date1);
+//                                        prepareTime.setText(dateStr);
+//                                    } catch (ParseException e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                }
+//                                ready = value.getString("serveTime");
+//                                if (ready != null && !ready.isEmpty()) {
+//                                    try {
+//                                        Date date1 = df.parse(ready);
+//                                        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+//                                        String dateStr = sdf.format(date1);
+//                                        readyTime.setText(dateStr);
+//                                    } catch (ParseException e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                }
+//                                completed = value.getString("deliTime");
+//                                if (completed != null && !completed.isEmpty()) {
+//                                    try {
+//                                        Date date1 = df.parse(completed);
+//                                        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+//                                        String dateStr = sdf.format(date1);
+//                                        completeTime.setText(dateStr);
+//                                        stateComplete();
+//                                    } catch (ParseException e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                }
+//                                break;
+//                            case 5:
+//                                cancel = value.getString("cancelTime");
+//                                if (cancel != null && !cancel.isEmpty()) {
+//                                    try {
+//                                        Date date1 = df.parse(cancel);
+//                                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+//                                        String dateStr = sdf.format(date1);
+//                                        AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+//                                        alert.setTitle("THÔNG BÁO!");
+//                                        alert.setMessage("Đơn hàng của bạn đã bị hủy!\nLý do: " + value.get("deliveryNote") +
+//                                                "\nĐơn hàng bị hủy lúc: \n" + dateStr);
+//                                        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                                            @Override
+//                                            public void onClick(DialogInterface dialogInterface, int i) {
+//
+//                                            }
+//                                        });
+//                                        alert.setOnDismissListener(new DialogInterface.OnDismissListener() {
+//                                            @Override
+//                                            public void onDismiss(DialogInterface dialogInterface) {
+//
+//                                            }
+//                                        });
+//                                        AlertDialog dialog = alert.create();
+//                                        dialog.show();
+//                                        dialog.getButton(dialog.BUTTON_POSITIVE)
+//                                                .setTextColor(Color.parseColor("#795C34"));
+//                                    } catch (ParseException e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                }
+//                                break;
+//                        }
+//                    }
+//                });
 
         //Cancel order
         cancelBtn.setOnClickListener(new View.OnClickListener() {
@@ -343,28 +344,28 @@ public class OrderFragment extends Fragment {
                 cancelOrderDialog.setContentView(cancelOrderView);
                 TextView yesBtn = cancelOrderDialog.findViewById(R.id.cancel_yesBtn);
                 TextView noBtn = cancelOrderDialog.findViewById(R.id.cancel_noBtn);
-                yesBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        EditText edtReason = cancelOrderDialog.findViewById(R.id.cancel_reason);
-                        String reason = edtReason.getText().toString().trim();
-                        Date date = new Date();
-                        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                        db.collection("order").document(orderID)
-                                .update("status", 5, "deliveryNote", reason,
-                                        "cancelTime", formatter.format(date))
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
-                                        Bundle bundle = new Bundle();
-                                        bundle.putString("documentID", orderID);
-                                        Navigation.findNavController(getView()).navigate(R.id.action_global_homeFragment, bundle);
-                                        Toast.makeText(getContext(), "Hủy đơn hàng thành công", Toast.LENGTH_SHORT).show();
-                                        cancelOrderDialog.dismiss();
-                                    }
-                                });
-                    }
-                });
+//                yesBtn.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        EditText edtReason = cancelOrderDialog.findViewById(R.id.cancel_reason);
+//                        String reason = edtReason.getText().toString().trim();
+//                        Date date = new Date();
+//                        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+//                        db.collection("order").document(orderID)
+//                                .update("status", 5, "deliveryNote", reason,
+//                                        "cancelTime", formatter.format(date))
+//                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                    @Override
+//                                    public void onSuccess(Void unused) {
+//                                        Bundle bundle = new Bundle();
+//                                        bundle.putString("documentID", orderID);
+//                                        Navigation.findNavController(getView()).navigate(R.id.action_global_homeFragment, bundle);
+//                                        Toast.makeText(getContext(), "Hủy đơn hàng thành công", Toast.LENGTH_SHORT).show();
+//                                        cancelOrderDialog.dismiss();
+//                                    }
+//                                });
+//                    }
+//                });
                 noBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

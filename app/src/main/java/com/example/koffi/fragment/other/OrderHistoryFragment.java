@@ -98,10 +98,10 @@ public class OrderHistoryFragment extends Fragment {
 
         //Sample data
         Date date = Calendar.getInstance().getTime();
-//        orderArray.add(new Order("user123","Cẩm Tiên","store123", date,5,"123 Nhà","0123456789",new Long(35000),new Long(20000),new Long(55000),"ko co gi",0));
-//        orderArray.add(new Order("user123","Cẩm Tiên","store123", date,4,"123 Nhà","0123456789",new Long(35000),new Long(20000),new Long(55000),"ko co gi",0));
-//        orderArray.add(new Order("user123","Cẩm Tiên","store123", date,5,"123 Nhà","0123456789",new Long(35000),new Long(20000),new Long(55000),"ko co gi",0));
-//        orderArray.add(new Order("user123","Cẩm Tiên","store123", date,2,"123 Nhà","0123456789",new Long(35000),new Long(20000),new Long(55000),"ko co gi",0));
+        orderArray.add(new Order("user123","Cẩm Tiên","store123", date,5,"123 Nhà","0123456789",new Long(35000),new Long(20000),new Long(55000),"ko co gi",0));
+        orderArray.add(new Order("user123","Cẩm Tiên","store123", date,4,"123 Nhà","0123456789",new Long(35000),new Long(20000),new Long(55000),"ko co gi",0));
+        orderArray.add(new Order("user123","Cẩm Tiên","store123", date,5,"123 Nhà","0123456789",new Long(35000),new Long(20000),new Long(55000),"ko co gi",0));
+        orderArray.add(new Order("user123","Cẩm Tiên","store123", date,2,"123 Nhà","0123456789",new Long(35000),new Long(20000),new Long(55000),"ko co gi",0));
 
         ListView listView = view.findViewById(R.id.historyLv);
         OrderAdapter orderAdapter = new OrderAdapter(getContext(),orderArray);
@@ -114,44 +114,45 @@ public class OrderHistoryFragment extends Fragment {
                 setListViewHeight(listView);
             }
         });
-        db.collection("order").whereEqualTo("userID", user.getUid())
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        orderArray.clear();
-                        getOrderArray(orderArray, orderAdapter);
-                    }
-                });
+//        db.collection("order").whereEqualTo("userID", user.getUid())
+//                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+//                        orderArray.clear();
+//                        getOrderArray(orderArray, orderAdapter);
+//                    }
+//                });
 
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                ArrayList<CartItem> cart = new ArrayList<>();
-                Bundle bundle = new Bundle();
-                Order order = (Order) listView.getItemAtPosition(i);
-                if (order.status==4 || order.status==5) {
-                    bundle.putString("from", "yes");
-                    if (order.method == 1) {
-                        bundle.putString("nhanhang", "taicho");
-                    }
-                    bundle.putString("documentID", order.orderID);
-                    Navigation.findNavController(getView()).navigate(R.id.action_orderHistoryFragment_to_orderDetailFragment2, bundle);
-                }
-                else {
-//                                bundle.putParcelableArrayList("orderItems", cart);
-//                                bundle.putLong("numberOfItems", num[0]);
-                    bundle.putInt("method", order.method);
-                    bundle.putString("orderID", order.orderID);
-                    bundle.putLong("total", order.total);
-                    bundle.putLong("subtotal", order.subtotal);
-                    bundle.putString("receiverName", order.name);
-                    bundle.putString("receiverPhone", order.phoneNumber);
-                    bundle.putString("address", order.address);
-                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-                    bundle.putString("time", sdf.format(order.date));
-                    Navigation.findNavController(getView()).navigate(R.id.action_orderHistoryFragment_to_orderFragment, bundle);
-                }
+//                ArrayList<CartItem> cart = new ArrayList<>();
+//                Bundle bundle = new Bundle();
+//                Order order = (Order) listView.getItemAtPosition(i);
+//                if (order.status==4 || order.status==5) {
+//                    bundle.putString("from", "yes");
+//                    if (order.method == 1) {
+//                        bundle.putString("nhanhang", "taicho");
+//                    }
+//                    bundle.putString("documentID", order.orderID);
+//                    Navigation.findNavController(getView()).navigate(R.id.action_orderHistoryFragment_to_orderDetailFragment2, bundle);
+//                }
+//                else {
+////                                bundle.putParcelableArrayList("orderItems", cart);
+////                                bundle.putLong("numberOfItems", num[0]);
+//                    bundle.putInt("method", order.method);
+//                    bundle.putString("orderID", order.orderID);
+//                    bundle.putLong("total", order.total);
+//                    bundle.putLong("subtotal", order.subtotal);
+//                    bundle.putString("receiverName", order.name);
+//                    bundle.putString("receiverPhone", order.phoneNumber);
+//                    bundle.putString("address", order.address);
+//                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+//                    bundle.putString("time", sdf.format(order.date));
+//                    Navigation.findNavController(getView()).navigate(R.id.action_orderHistoryFragment_to_orderFragment, bundle);
+                    Navigation.findNavController(getView()).navigate(R.id.action_orderHistoryFragment_to_orderFragment);
+//                }
 //                cartAdapter = new CartItemAdapter(getContext(),cart,true);
 //
 //                long num[] = new long[1];

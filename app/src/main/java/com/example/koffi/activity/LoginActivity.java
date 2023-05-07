@@ -114,37 +114,37 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                progressBar.setVisibility(View.VISIBLE);
-                loginBtn.setVisibility(View.INVISIBLE);
-                PhoneAuthProvider.getInstance().verifyPhoneNumber("+84" + editText.getText().toString(),
-                        60, TimeUnit.SECONDS, LoginActivity.this,
-                        new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-                            @Override
-                            public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-                                progressBar.setVisibility(View.INVISIBLE);
-                                loginBtn.setVisibility(View.VISIBLE);
-                            }
-
-                            @Override
-                            public void onVerificationFailed(@NonNull FirebaseException e) {
-                                progressBar.setVisibility(View.INVISIBLE);
-                                loginBtn.setVisibility(View.VISIBLE);
-                                Toast.makeText(LoginActivity.this, "Xác thực đăng nhập thất bại", Toast.LENGTH_LONG).show();
-                            }
-
-                            @Override
-                            public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-                                progressBar.setVisibility(View.INVISIBLE);
-                                loginBtn.setVisibility(View.VISIBLE);
+//                progressBar.setVisibility(View.VISIBLE);
+//                loginBtn.setVisibility(View.INVISIBLE);
+//                PhoneAuthProvider.getInstance().verifyPhoneNumber("+84" + editText.getText().toString(),
+//                        60, TimeUnit.SECONDS, LoginActivity.this,
+//                        new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+//                            @Override
+//                            public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+//                                progressBar.setVisibility(View.INVISIBLE);
+//                                loginBtn.setVisibility(View.VISIBLE);
+//                            }
+//
+//                            @Override
+//                            public void onVerificationFailed(@NonNull FirebaseException e) {
+//                                progressBar.setVisibility(View.INVISIBLE);
+//                                loginBtn.setVisibility(View.VISIBLE);
+//                                Toast.makeText(LoginActivity.this, "Xác thực đăng nhập thất bại", Toast.LENGTH_LONG).show();
+//                            }
+//
+//                            @Override
+//                            public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+//                                progressBar.setVisibility(View.INVISIBLE);
+//                                loginBtn.setVisibility(View.VISIBLE);
                                 Intent intent = new Intent(LoginActivity.this, OTPActivity.class);
-                                intent.putExtra("mobile", editText.getText().toString());
-                                intent.putExtra("verificationId", s);
+//                                intent.putExtra("mobile", editText.getText().toString());
+//                                intent.putExtra("verificationId", s);
                                 startActivity(intent);
-                                super.onCodeSent(s, forceResendingToken);
+//                                super.onCodeSent(s, forceResendingToken);
                             }
-                        });
+//                        });
 
-            }
+//            }
         });
         createRequest();
         ggBtn.setOnClickListener(new View.OnClickListener() {
@@ -156,7 +156,7 @@ public class LoginActivity extends AppCompatActivity {
         fbBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this, FacebookAuthActivity.class));
+//                startActivity(new Intent(LoginActivity.this, FacebookAuthActivity.class));
             }
         });
     }
@@ -303,32 +303,32 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         String email = edtEmailForgot.getText().toString().trim();
-                        FirebaseFirestore db = FirebaseFirestore.getInstance();
-                        db.collection("staff")
-                                .whereEqualTo("email", email)
-                                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    if (task.getResult().size() == 0)
-                                        Toast.makeText(LoginActivity.this, "Email này không có quyền hạn!", Toast.LENGTH_SHORT).show();
-                                    else {
-                                        FirebaseAuth.getInstance().sendPasswordResetEmail(email)
-                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                        if (task.isSuccessful()) {
-                                                            Toast.makeText(LoginActivity.this, "Vui lòng kiểm tra email để đặt lại mật khẩu", Toast.LENGTH_LONG).show();
-                                                            bottomSheetDialog.dismiss();
-                                                        } else {
-                                                            Toast.makeText(LoginActivity.this, "Email này chưa được đăng ký", Toast.LENGTH_LONG).show();
-                                                        }
-                                                    }
-                                                });
-                                    }
-                                }
-                            }
-                        });
+//                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+//                        db.collection("staff")
+//                                .whereEqualTo("email", email)
+//                                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                                if (task.isSuccessful()) {
+//                                    if (task.getResult().size() == 0)
+//                                        Toast.makeText(LoginActivity.this, "Email này không có quyền hạn!", Toast.LENGTH_SHORT).show();
+//                                    else {
+//                                        FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+//                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                                    @Override
+//                                                    public void onComplete(@NonNull Task<Void> task) {
+//                                                        if (task.isSuccessful()) {
+//                                                            Toast.makeText(LoginActivity.this, "Vui lòng kiểm tra email để đặt lại mật khẩu", Toast.LENGTH_LONG).show();
+//                                                            bottomSheetDialog.dismiss();
+//                                                        } else {
+//                                                            Toast.makeText(LoginActivity.this, "Email này chưa được đăng ký", Toast.LENGTH_LONG).show();
+//                                                        }
+//                                                    }
+//                                                });
+//                                    }
+//                                }
+//                            }
+//                        });
                     }
                 });
                 bottomSheetDialog.show();
@@ -337,27 +337,27 @@ public class LoginActivity extends AppCompatActivity {
         staffLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pb.setVisibility(View.VISIBLE);
-                staffLogin.setVisibility(View.INVISIBLE);
-                String email = edtEmail.getText().toString().trim();
-                String password = edtPass.getText().toString().trim();
-                auth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    pb.setVisibility(View.INVISIBLE);
-                                    staffLogin.setVisibility(View.VISIBLE);
-                                    Toast.makeText(LoginActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+//                pb.setVisibility(View.VISIBLE);
+//                staffLogin.setVisibility(View.INVISIBLE);
+//                String email = edtEmail.getText().toString().trim();
+//                String password = edtPass.getText().toString().trim();
+//                auth.signInWithEmailAndPassword(email, password)
+//                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<AuthResult> task) {
+//                                if (task.isSuccessful()) {
+//                                    pb.setVisibility(View.INVISIBLE);
+//                                    staffLogin.setVisibility(View.VISIBLE);
+//                                    Toast.makeText(LoginActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
                                     startActivity(new Intent(LoginActivity.this, StaffActivity.class));
-                                }
-                                else {
-                                    pb.setVisibility(View.INVISIBLE);
-                                    staffLogin.setVisibility(View.VISIBLE);
-                                    Toast.makeText(LoginActivity.this, "Đăng nhập thất bại!", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
+//                                }
+//                                else {
+//                                    pb.setVisibility(View.INVISIBLE);
+//                                    staffLogin.setVisibility(View.VISIBLE);
+//                                    Toast.makeText(LoginActivity.this, "Đăng nhập thất bại!", Toast.LENGTH_SHORT).show();
+//                                }
+//                            }
+//                        });
             }
         });
     }

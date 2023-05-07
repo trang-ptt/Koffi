@@ -205,33 +205,33 @@ public class CheckOutFragment extends Fragment {
         tvDate.setText(strDate);
         tvName.setText(receiverName);
         tvPhone.setText(receiverPhone);
-        if (tvName.getText().toString().equals("Thêm tên")||tvPhone.getText().toString().equals("Thêm số điện thoại"))
-            db.collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                    .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    receiverName = documentSnapshot.getString("Ten");
-                    receiverPhone = documentSnapshot.getString("Sdt");
-                    if (receiverName != null)
-                        if (!receiverName.isEmpty()) {
-                            tvName.setText(receiverName);
-                            editor.putString("receiverName",receiverName);
-                            editor.apply();
-                            System.out.println("Dòng 207: "+receiverName);
-                        }
-
-                    if(receiverPhone.isEmpty())
-                        System.out.println("Chốt phone nè: "+receiverPhone);
-                    if (receiverPhone != null)
-                        if (!receiverPhone.isEmpty() ) {
-                            tvPhone.setText(receiverPhone);
-                            editor.putString("receiverPhone",receiverPhone);
-                            editor.apply();
-                            System.out.println("Dòng 217: "+receiverPhone);
-                        }
-
-                }
-            });
+//        if (tvName.getText().toString().equals("Thêm tên")||tvPhone.getText().toString().equals("Thêm số điện thoại"))
+//            db.collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+//                    .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//                @Override
+//                public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                    receiverName = documentSnapshot.getString("Ten");
+//                    receiverPhone = documentSnapshot.getString("Sdt");
+//                    if (receiverName != null)
+//                        if (!receiverName.isEmpty()) {
+//                            tvName.setText(receiverName);
+//                            editor.putString("receiverName",receiverName);
+//                            editor.apply();
+//                            System.out.println("Dòng 207: "+receiverName);
+//                        }
+//
+//                    if(receiverPhone.isEmpty())
+//                        System.out.println("Chốt phone nè: "+receiverPhone);
+//                    if (receiverPhone != null)
+//                        if (!receiverPhone.isEmpty() ) {
+//                            tvPhone.setText(receiverPhone);
+//                            editor.putString("receiverPhone",receiverPhone);
+//                            editor.apply();
+//                            System.out.println("Dòng 217: "+receiverPhone);
+//                        }
+//
+//                }
+//            });
 
         //Receiver information
         LinearLayout receiver = view.findViewById(R.id.checkout_receiver);
@@ -289,46 +289,46 @@ public class CheckOutFragment extends Fragment {
         });
 
         //Listen to data change
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            Query query = db.collection("order")
-                    .whereEqualTo("userID", FirebaseAuth.getInstance().getCurrentUser().getUid())
-                    .whereEqualTo("status", 0);
-            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot doc : task.getResult()) {
-                            cartID = doc.getId();
-                            db.collection("cartItems").whereEqualTo("cartID", doc.getId())
-                                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                                        @Override
-                                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                                            if (error != null) {
-                                                Log.w(TAG, "listen:error", error);
-                                                return;
-                                            }
-                                            System.out.println("Db updated");
-                                            reloadCart();
-                                            for (DocumentChange dc : value.getDocumentChanges()) {
-                                                switch (dc.getType()) {
-                                                    case ADDED:
-                                                        Log.d(TAG, "New cart item: " + dc.getDocument().getData());
-                                                        break;
-                                                    case MODIFIED:
-                                                        Log.d(TAG, "Modified cart item: " + dc.getDocument().getData());
-                                                        break;
-                                                    case REMOVED:
-                                                        Log.d(TAG, "Removed cart item: " + dc.getDocument().getData());
-                                                        break;
-                                                }
-                                            }
-                                        }
-                                    });
-                        }
-                    }
-                }
-            });
-        }
+//        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+//            Query query = db.collection("order")
+//                    .whereEqualTo("userID", FirebaseAuth.getInstance().getCurrentUser().getUid())
+//                    .whereEqualTo("status", 0);
+//            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                @Override
+//                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                    if (task.isSuccessful()) {
+//                        for (QueryDocumentSnapshot doc : task.getResult()) {
+//                            cartID = doc.getId();
+//                            db.collection("cartItems").whereEqualTo("cartID", doc.getId())
+//                                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+//                                        @Override
+//                                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+//                                            if (error != null) {
+//                                                Log.w(TAG, "listen:error", error);
+//                                                return;
+//                                            }
+//                                            System.out.println("Db updated");
+//                                            reloadCart();
+//                                            for (DocumentChange dc : value.getDocumentChanges()) {
+//                                                switch (dc.getType()) {
+//                                                    case ADDED:
+//                                                        Log.d(TAG, "New cart item: " + dc.getDocument().getData());
+//                                                        break;
+//                                                    case MODIFIED:
+//                                                        Log.d(TAG, "Modified cart item: " + dc.getDocument().getData());
+//                                                        break;
+//                                                    case REMOVED:
+//                                                        Log.d(TAG, "Removed cart item: " + dc.getDocument().getData());
+//                                                        break;
+//                                                }
+//                                            }
+//                                        }
+//                                    });
+//                        }
+//                    }
+//                }
+//            });
+//        }
         //Cart list
         ListView cartList = view.findViewById(R.id.cartList);
         cartAdapter = new CartItemAdapter(getContext(),cart,true);

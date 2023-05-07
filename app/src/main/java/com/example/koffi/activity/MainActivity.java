@@ -34,20 +34,20 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //Check if staff
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        if (auth.getCurrentUser()!=null) {
-            task = auth.getCurrentUser().getIdToken(false).addOnSuccessListener(new OnSuccessListener<GetTokenResult>() {
-                @Override
-                public void onSuccess(GetTokenResult getTokenResult) {
-                    String label = task.getResult().getSignInProvider();
-                    if (!label.equals("phone"))
-                        if (label.equals("password") ) {
-                            Intent intent = new Intent(MainActivity.this,StaffActivity.class);
-                            startActivity(intent);
-                        }
-                }
-            });
-        }
+//        FirebaseAuth auth = FirebaseAuth.getInstance();
+//        if (auth.getCurrentUser()!=null) {
+//            task = auth.getCurrentUser().getIdToken(false).addOnSuccessListener(new OnSuccessListener<GetTokenResult>() {
+//                @Override
+//                public void onSuccess(GetTokenResult getTokenResult) {
+//                    String label = task.getResult().getSignInProvider();
+//                    if (!label.equals("phone"))
+//                        if (label.equals("password") ) {
+//                            Intent intent = new Intent(MainActivity.this,StaffActivity.class);
+//                            startActivity(intent);
+//                        }
+//                }
+//            });
+//        }
 
         //Bottom nav
         navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);

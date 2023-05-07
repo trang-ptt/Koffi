@@ -82,79 +82,79 @@ public class ProfileFragment extends Fragment {
         TextView GioiTinh = view.findViewById(R.id.genderText);
 
         //Get user info
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user == null) {
-            startActivity(new Intent(getContext(), LoginActivity.class));
-            Toast.makeText(getContext(), "Bạn chưa đăng nhâp. Mời bạn đăng nhập!", Toast.LENGTH_LONG).show();
-        } else {
-            db.collection("users").document(user.getUid()).get()
-                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                System.out.println("found");
-                                DocumentSnapshot document = task.getResult();
-                                if (document != null) {
-                                    if (document.exists()) {
-                                        if (document.get("Ten") != null) {
-                                            String a = document.get("Ten").toString();
-                                            String[] name = a.split(" ", 2);
-                                            if (name.length > 1) {
-                                                Ho.setText(name[1]);
-                                                Ten.setText(name[0]);
-                                            }
-                                        }
-                                        if (document.get("Email") != null)
-                                        Email.setText((CharSequence) document.get("Email"));
-                                        if (document.get("Sdt") != null)
-                                        Sdt.setText((((CharSequence) document.get("Sdt"))));
-                                        NgaySinh.setText((CharSequence) document.get("NgaySinh"));
-                                        if (document.getString("GioiTinh") != null)
-                                        if (!document.getString("GioiTinh").isEmpty())
-                                        GioiTinh.setText((CharSequence) document.get("GioiTinh"));
-                                    }
-                                }
-                            }
-                        }
-                    });
-                String a = user.getDisplayName();
-                if (!a.equals("") && a != null) {
-                    System.out.println("here");
-                    String[] name = a.split(" ", 2);
-                    if (name.length > 1)
-                    Ho.setText(name[1]);
-                    Ten.setText(name[0]);
-                }
-                if (user.getEmail() != null && !user.getEmail().isEmpty())
-                Email.setText((user.getEmail()));
-            if (user.getPhoneNumber() != null && !user.getPhoneNumber().isEmpty())
-                Sdt.setText(user.getPhoneNumber());
-
-
-        }
+//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+//        if (user == null) {
+//            startActivity(new Intent(getContext(), LoginActivity.class));
+//            Toast.makeText(getContext(), "Bạn chưa đăng nhâp. Mời bạn đăng nhập!", Toast.LENGTH_LONG).show();
+//        } else {
+//            db.collection("users").document(user.getUid()).get()
+//                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                            if (task.isSuccessful()) {
+//                                System.out.println("found");
+//                                DocumentSnapshot document = task.getResult();
+//                                if (document != null) {
+//                                    if (document.exists()) {
+//                                        if (document.get("Ten") != null) {
+//                                            String a = document.get("Ten").toString();
+//                                            String[] name = a.split(" ", 2);
+//                                            if (name.length > 1) {
+//                                                Ho.setText(name[1]);
+//                                                Ten.setText(name[0]);
+//                                            }
+//                                        }
+//                                        if (document.get("Email") != null)
+//                                        Email.setText((CharSequence) document.get("Email"));
+//                                        if (document.get("Sdt") != null)
+//                                        Sdt.setText((((CharSequence) document.get("Sdt"))));
+//                                        NgaySinh.setText((CharSequence) document.get("NgaySinh"));
+//                                        if (document.getString("GioiTinh") != null)
+//                                        if (!document.getString("GioiTinh").isEmpty())
+//                                        GioiTinh.setText((CharSequence) document.get("GioiTinh"));
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    });
+//                String a = user.getDisplayName();
+//                if (!a.equals("") && a != null) {
+//                    System.out.println("here");
+//                    String[] name = a.split(" ", 2);
+//                    if (name.length > 1)
+//                    Ho.setText(name[1]);
+//                    Ten.setText(name[0]);
+//                }
+//                if (user.getEmail() != null && !user.getEmail().isEmpty())
+//                Email.setText((user.getEmail()));
+//            if (user.getPhoneNumber() != null && !user.getPhoneNumber().isEmpty())
+//                Sdt.setText(user.getPhoneNumber());
+//
+//
+//        }
 
             //Update profile
-            btnUpdate.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String firstname = Ho.getText().toString();
-                    String lastname = Ten.getText().toString();
-                    String name = lastname + " " + firstname;
-                    String mail = Email.getText().toString();
-                    String sdt = Sdt.getText().toString();
-                    String DateOfBirth = NgaySinh.getText().toString();
-                    String genderr = GioiTinh.getText().toString();
-                    User userr = new User(name, mail, sdt, DateOfBirth, genderr);
-                    //update in authen
-                    UserProfileChangeRequest profileupdate = new UserProfileChangeRequest.Builder().setDisplayName(name).build();
-                    //Update in firestore
-                    db.collection("users").document(user.getUid()).set(userr);
-
-                    Navigation.findNavController(view).navigate(R.id.otherFragment);
-                }
-
-
-            });
+//            btnUpdate.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    String firstname = Ho.getText().toString();
+//                    String lastname = Ten.getText().toString();
+//                    String name = lastname + " " + firstname;
+//                    String mail = Email.getText().toString();
+//                    String sdt = Sdt.getText().toString();
+//                    String DateOfBirth = NgaySinh.getText().toString();
+//                    String genderr = GioiTinh.getText().toString();
+//                    User userr = new User(name, mail, sdt, DateOfBirth, genderr);
+//                    //update in authen
+//                    UserProfileChangeRequest profileupdate = new UserProfileChangeRequest.Builder().setDisplayName(name).build();
+//                    //Update in firestore
+//                    db.collection("users").document(user.getUid()).set(userr);
+//
+//                    Navigation.findNavController(view).navigate(R.id.otherFragment);
+//                }
+//
+//
+//            });
 
             //Ngay Sinh
             Calendar calendar = Calendar.getInstance();
