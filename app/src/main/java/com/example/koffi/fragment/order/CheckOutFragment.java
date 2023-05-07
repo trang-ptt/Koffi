@@ -176,8 +176,14 @@ public class CheckOutFragment extends Fragment {
         });
 
         cart = new ArrayList<CartItem>();
-        if (getArguments().getParcelableArrayList("cartItems") != null)
-        cart = getArguments().getParcelableArrayList("cartItems");
+        ArrayList<Topping> toppings = new ArrayList<Topping>();
+        toppings.add(new Topping("123","Trân châu hoàng kim",6000L));
+        cart.add(new CartItem("123","Cà phê",2,new Long(35000),"Upsize",toppings,"ít đường"));
+        cart.add(new CartItem("123","Cà phê",2,new Long(35000),"Upsize",toppings,"ít đường"));
+        cart.add(new CartItem("123","Cà phê",2,new Long(35000),"Upsize",toppings,"ít đường"));
+
+//        if (getArguments().getParcelableArrayList("cartItems") != null)
+//        cart = getArguments().getParcelableArrayList("cartItems");
         total = 0;
         subtotal = 0;
         for (CartItem item : cart) {
@@ -691,112 +697,119 @@ public class CheckOutFragment extends Fragment {
         });
         //Navigate to OrderFragment
         Button orderBtn = view.findViewById(R.id.orderBtn);
+//        orderBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (cart.isEmpty()) {
+//                    Toast.makeText(getContext(),"Giỏ hàng của bạn không có gì hết! Vui lòng chọn sản phẩm!", Toast.LENGTH_LONG).show();
+//                }
+//                else if (receiverName == null || receiverPhone == null) {
+//                    Toast.makeText(getContext(),"Vui lòng nhập đầy đủ thông tin người nhận", Toast.LENGTH_LONG).show();
+//                }
+//                else if (receiverName.isEmpty() || receiverPhone.isEmpty()) {
+//                    Toast.makeText(getContext(),"Vui lòng nhập đầy đủ thông tin người nhận", Toast.LENGTH_LONG).show();
+//                } else {
+//                    if (method == 0 && address.isEmpty()) {
+//                        Toast.makeText(getContext(),"Vui lòng chọn địa chỉ giao", Toast.LENGTH_LONG).show();
+//                    } else if (method == 1 && storeAddress.isEmpty()) {
+//                        Toast.makeText(getContext(),"Vui lòng chọn cửa hàng nhận", Toast.LENGTH_LONG).show();
+//                    } else {
+//                        Date date = new Date();
+//                        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+//                        Bundle bundle = new Bundle();
+//                        bundle.putInt("method", method);
+//                        bundle.putString("orderID", cartID);
+//                        bundle.putParcelableArrayList("orderItems", cart);
+//                        bundle.putLong("total", total);
+//                        bundle.putLong("subtotal", subtotal);
+//                        bundle.putLong("numberOfItems", number);
+//                        bundle.putString("receiverName", receiverName);
+//                        bundle.putString("receiverPhone", receiverPhone);
+//                        bundle.putString("from", "checkout");
+//                        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+//                        bundle.putString("time", sdf.format(new Date()));
+//                        if (method == 0) {
+//                            bundle.putString("address", address);
+//                        } else
+//                            bundle.putString("address", storeAddress);
+//                        if (method == 0) {
+//                            Geocoder geocoder = new Geocoder(getContext());
+//                            try {
+//                                List<Address> addressList;
+//                                addressList = geocoder.getFromLocationName(address, 1);
+//                                if (addressList != null && addressList.size() > 0) {
+//                                    double lat = addressList.get(0).getLatitude();
+//                                    double lng = addressList.get(0).getLongitude();
+//                                    float[] result = new float[1];
+//                                    float[] min = new float[1];
+//                                    min[0] = Float.MAX_VALUE;
+//                                    db.collection("stores").get()
+//                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                                                @Override
+//                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                                                    if (task.isSuccessful()) {
+//                                                        for (QueryDocumentSnapshot snapshot : task.getResult()) {
+//                                                            Location.distanceBetween(lat,lng,
+//                                                                    snapshot.getDouble("latitude"), snapshot.getDouble("longitude"), result);
+//                                                            float distance = result[0] / 1000;
+//                                                            if (min[0] > distance) {
+//                                                                min[0] = distance;
+//                                                                storeID = snapshot.getId();
+//                                                            }
+//                                                        }
+//                                                        if (min[0] > 15) {
+//                                                            Toast.makeText(getContext(), "Địa chỉ của bạn nằm ngoài bán kính giao hàng (15km) nên đơn hàng không thể đặt", Toast.LENGTH_LONG).show();
+//                                                        } else {
+//                                                            String deliveryNote = edtNote.getText().toString().trim();
+//                                                            db.collection("order").document(cartID)
+//                                                                    .update("address", address, "orderID", cartID,
+//                                                                            "date", formatter.format(date),
+//                                                                            "deliveryNote", deliveryNote, "method", 0,
+//                                                                            "name", receiverName, "phoneNumber", receiverPhone,
+//                                                                            "ship", ship, "status", 1, "storeID", storeID,
+//                                                                            "subtotal", subtotal, "total", total);
+//                                                            Toast.makeText(getContext(), "Đặt hàng thành công!", Toast.LENGTH_LONG).show();
+//                                                            //Create new cart
+//                                                            Order order = new Order(
+//                                                                    FirebaseAuth.getInstance().getCurrentUser().getUid(), 0
+//                                                            );
+//                                                            db.collection("order").add(order);
+//                                                            Navigation.findNavController(getView()).navigate(R.id.action_checkOutFragment_to_orderFragment, bundle);
+//                                                        }
+//                                                    }
+//                                                }
+//                                            });
+//                                } else {
+//                                    Toast.makeText(getContext(), "Không tìm thấy địa chỉ, vui lòng nhập địa chỉ khác", Toast.LENGTH_SHORT).show();
+//                                }
+//                            } catch (IOException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                        else if (method == 1) {
+//                            db.collection("order").document(cartID)
+//                                    .update("date", formatter.format(date), "orderID", cartID,
+//                                            "method", 1, "storeID", storeID, "address", storeAddress,
+//                                            "name", receiverName, "phoneNumber", receiverPhone,
+//                                            "ship", ship, "status", 1,
+//                                            "subtotal", subtotal, "total", total);
+//                            Toast.makeText(getContext(), "Đặt hàng thành công!", Toast.LENGTH_LONG).show();
+//                            //Create new cart
+//                            Order order = new Order(
+//                                    FirebaseAuth.getInstance().getCurrentUser().getUid(), 0
+//                            );
+//                            db.collection("order").add(order);
+//                            Navigation.findNavController(getView()).navigate(R.id.action_checkOutFragment_to_orderFragment, bundle);
+//                        }
+//                    }
+//                }
+//            }
+//        });
+
         orderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (cart.isEmpty()) {
-                    Toast.makeText(getContext(),"Giỏ hàng của bạn không có gì hết! Vui lòng chọn sản phẩm!", Toast.LENGTH_LONG).show();
-                }
-                else if (receiverName == null || receiverPhone == null) {
-                    Toast.makeText(getContext(),"Vui lòng nhập đầy đủ thông tin người nhận", Toast.LENGTH_LONG).show();
-                }
-                else if (receiverName.isEmpty() || receiverPhone.isEmpty()) {
-                    Toast.makeText(getContext(),"Vui lòng nhập đầy đủ thông tin người nhận", Toast.LENGTH_LONG).show();
-                } else {
-                    if (method == 0 && address.isEmpty()) {
-                        Toast.makeText(getContext(),"Vui lòng chọn địa chỉ giao", Toast.LENGTH_LONG).show();
-                    } else if (method == 1 && storeAddress.isEmpty()) {
-                        Toast.makeText(getContext(),"Vui lòng chọn cửa hàng nhận", Toast.LENGTH_LONG).show();
-                    } else {
-                        Date date = new Date();
-                        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                        Bundle bundle = new Bundle();
-                        bundle.putInt("method", method);
-                        bundle.putString("orderID", cartID);
-                        bundle.putParcelableArrayList("orderItems", cart);
-                        bundle.putLong("total", total);
-                        bundle.putLong("subtotal", subtotal);
-                        bundle.putLong("numberOfItems", number);
-                        bundle.putString("receiverName", receiverName);
-                        bundle.putString("receiverPhone", receiverPhone);
-                        bundle.putString("from", "checkout");
-                        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-                        bundle.putString("time", sdf.format(new Date()));
-                        if (method == 0) {
-                            bundle.putString("address", address);
-                        } else
-                            bundle.putString("address", storeAddress);
-                        if (method == 0) {
-                            Geocoder geocoder = new Geocoder(getContext());
-                            try {
-                                List<Address> addressList;
-                                addressList = geocoder.getFromLocationName(address, 1);
-                                if (addressList != null && addressList.size() > 0) {
-                                    double lat = addressList.get(0).getLatitude();
-                                    double lng = addressList.get(0).getLongitude();
-                                    float[] result = new float[1];
-                                    float[] min = new float[1];
-                                    min[0] = Float.MAX_VALUE;
-                                    db.collection("stores").get()
-                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                    if (task.isSuccessful()) {
-                                                        for (QueryDocumentSnapshot snapshot : task.getResult()) {
-                                                            Location.distanceBetween(lat,lng,
-                                                                    snapshot.getDouble("latitude"), snapshot.getDouble("longitude"), result);
-                                                            float distance = result[0] / 1000;
-                                                            if (min[0] > distance) {
-                                                                min[0] = distance;
-                                                                storeID = snapshot.getId();
-                                                            }
-                                                        }
-                                                        if (min[0] > 15) {
-                                                            Toast.makeText(getContext(), "Địa chỉ của bạn nằm ngoài bán kính giao hàng (15km) nên đơn hàng không thể đặt", Toast.LENGTH_LONG).show();
-                                                        } else {
-                                                            String deliveryNote = edtNote.getText().toString().trim();
-                                                            db.collection("order").document(cartID)
-                                                                    .update("address", address, "orderID", cartID,
-                                                                            "date", formatter.format(date),
-                                                                            "deliveryNote", deliveryNote, "method", 0,
-                                                                            "name", receiverName, "phoneNumber", receiverPhone,
-                                                                            "ship", ship, "status", 1, "storeID", storeID,
-                                                                            "subtotal", subtotal, "total", total);
-                                                            Toast.makeText(getContext(), "Đặt hàng thành công!", Toast.LENGTH_LONG).show();
-                                                            //Create new cart
-                                                            Order order = new Order(
-                                                                    FirebaseAuth.getInstance().getCurrentUser().getUid(), 0
-                                                            );
-                                                            db.collection("order").add(order);
-                                                            Navigation.findNavController(getView()).navigate(R.id.action_checkOutFragment_to_orderFragment, bundle);
-                                                        }
-                                                    }
-                                                }
-                                            });
-                                } else {
-                                    Toast.makeText(getContext(), "Không tìm thấy địa chỉ, vui lòng nhập địa chỉ khác", Toast.LENGTH_SHORT).show();
-                                }
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        else if (method == 1) {
-                            db.collection("order").document(cartID)
-                                    .update("date", formatter.format(date), "orderID", cartID,
-                                            "method", 1, "storeID", storeID, "address", storeAddress,
-                                            "name", receiverName, "phoneNumber", receiverPhone,
-                                            "ship", ship, "status", 1,
-                                            "subtotal", subtotal, "total", total);
-                            Toast.makeText(getContext(), "Đặt hàng thành công!", Toast.LENGTH_LONG).show();
-                            //Create new cart
-                            Order order = new Order(
-                                    FirebaseAuth.getInstance().getCurrentUser().getUid(), 0
-                            );
-                            db.collection("order").add(order);
-                            Navigation.findNavController(getView()).navigate(R.id.action_checkOutFragment_to_orderFragment, bundle);
-                        }
-                    }
-                }
+                Navigation.findNavController(getView()).navigate(R.id.action_checkOutFragment_to_orderFragment);
             }
         });
     }

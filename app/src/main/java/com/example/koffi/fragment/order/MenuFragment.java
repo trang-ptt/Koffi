@@ -200,10 +200,10 @@ public class MenuFragment extends Fragment {
         });
 
         bottomAppBar = getView().findViewById(R.id.bottomAppBar);
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user == null) {
-            bottomAppBar.setVisibility(View.INVISIBLE);
-        }
+//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+//        if (user == null) {
+//            bottomAppBar.setVisibility(View.INVISIBLE);
+//        }
 
         //Navigate to checkout
         LinearLayout totalPrice = view.findViewById(R.id.totalPrice);
@@ -287,46 +287,46 @@ public class MenuFragment extends Fragment {
         });
 
         //Listen to data changed
-        if (user != null) {
-            Query query = db.collection("order")
-                    .whereEqualTo("userID", FirebaseAuth.getInstance().getCurrentUser().getUid())
-                    .whereEqualTo("status", 0);
-            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot doc : task.getResult()) {
-                            db.collection("cartItems").whereEqualTo("cartID", doc.getId())
-                                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                                @Override
-                                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                                    if (error != null) {
-                                        Log.w(TAG, "listen:error", error);
-                                        return;
-                                    }
-                                    System.out.println("Db updated");
+//        if (user != null) {
+//            Query query = db.collection("order")
+//                    .whereEqualTo("userID", FirebaseAuth.getInstance().getCurrentUser().getUid())
+//                    .whereEqualTo("status", 0);
+//            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                @Override
+//                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                    if (task.isSuccessful()) {
+//                        for (QueryDocumentSnapshot doc : task.getResult()) {
+//                            db.collection("cartItems").whereEqualTo("cartID", doc.getId())
+//                                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+//                                @Override
+//                                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+//                                    if (error != null) {
+//                                        Log.w(TAG, "listen:error", error);
+//                                        return;
+//                                    }
+//                                    System.out.println("Db updated");
                                     loadCart();
-                                    for (DocumentChange dc : value.getDocumentChanges()) {
-                                        switch (dc.getType()) {
-                                            case ADDED:
-                                                Log.d(TAG, "New cart item: " + dc.getDocument().getData());
-                                                break;
-                                            case MODIFIED:
-                                                Log.d(TAG, "Modified cart item: " + dc.getDocument().getData());
-                                                break;
-                                            case REMOVED:
-                                                Log.d(TAG, "Removed cart item: " + dc.getDocument().getData());
-                                                break;
-                                        }
-                                    }
-                                }
-                            });
-
-                        }
-                    }
-                }
-            });
-        }
+//                                    for (DocumentChange dc : value.getDocumentChanges()) {
+//                                        switch (dc.getType()) {
+//                                            case ADDED:
+//                                                Log.d(TAG, "New cart item: " + dc.getDocument().getData());
+//                                                break;
+//                                            case MODIFIED:
+//                                                Log.d(TAG, "Modified cart item: " + dc.getDocument().getData());
+//                                                break;
+//                                            case REMOVED:
+//                                                Log.d(TAG, "Removed cart item: " + dc.getDocument().getData());
+//                                                break;
+//                                        }
+//                                    }
+//                                }
+//                            });
+//
+//                        }
+//                    }
+//                }
+//            });
+//        }
 
     }
 
@@ -334,56 +334,56 @@ public class MenuFragment extends Fragment {
     long number;
     ArrayList<CartItem> cartItems;
     private void loadCart() {
-        total = 0;
-        number = 0;
+        total = 100000;
+        number = 2;
         cartItems = new ArrayList<>();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            Query query = db.collection("order")
-                    .whereEqualTo("userID", FirebaseAuth.getInstance().getCurrentUser().getUid())
-                    .whereEqualTo("status", 0);
-            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot doc : task.getResult()) {
-                            System.out.println("Doc: " + doc.getData());
-                            db.collection("cartItems")
-                                    .whereEqualTo("cartID", doc.getId()).get()
-                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                            if (task.isSuccessful()) {
-                                                if (task.getResult().size() == 0) {
-                                                    bottomAppBar.findViewById(R.id.totalPrice).setVisibility(View.GONE);
-                                                }
-                                                else {
+//        if (user != null) {
+//            Query query = db.collection("order")
+//                    .whereEqualTo("userID", FirebaseAuth.getInstance().getCurrentUser().getUid())
+//                    .whereEqualTo("status", 0);
+//            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                @Override
+//                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                    if (task.isSuccessful()) {
+//                        for (QueryDocumentSnapshot doc : task.getResult()) {
+//                            System.out.println("Doc: " + doc.getData());
+//                            db.collection("cartItems")
+//                                    .whereEqualTo("cartID", doc.getId()).get()
+//                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                                        @Override
+//                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                                            if (task.isSuccessful()) {
+//                                                if (task.getResult().size() == 0) {
+//                                                    bottomAppBar.findViewById(R.id.totalPrice).setVisibility(View.GONE);
+//                                                }
+//                                                else {
                                                     bottomAppBar.findViewById(R.id.totalPrice).setVisibility(View.VISIBLE);
-                                                    total = 0;
-                                                    number = 0;
-                                                    cartItems = new ArrayList<>();
-                                                    for (QueryDocumentSnapshot snapshot : task.getResult()) {
-                                                        total += snapshot.getLong("price");
-                                                        number += snapshot.getLong("quantity");
-                                                        cartItems.add(snapshot.toObject(CartItem.class));
-                                                        System.out.println("Cart items: " + cartItems);
-                                                    }
-                                                    TextView tvTotal = bottomAppBar.findViewById(R.id.totalItemsPrice);
-                                                    tvTotal.setText(total + "đ");
-                                                    TextView tvNumber = bottomAppBar.findViewById(R.id.numberOfItems);
-                                                    tvNumber.setText("" + number);
-                                                    Bundle bundle = new Bundle();
-                                                    bundle.putParcelableArrayList("cartItems", cartItems);
-                                                    if (bundle == null) System.out.println("Bundle is null");
-                                                }
-                                            }
-                                        }
-                                    });
-                        }
-                    }
-                }
-            });
-        }
+//                                                    total = 0;
+//                                                    number = 0;
+//                                                    cartItems = new ArrayList<>();
+//                                                    for (QueryDocumentSnapshot snapshot : task.getResult()) {
+//                                                        total += snapshot.getLong("price");
+//                                                        number += snapshot.getLong("quantity");
+//                                                        cartItems.add(snapshot.toObject(CartItem.class));
+//                                                        System.out.println("Cart items: " + cartItems);
+//                                                    }
+//                                                    TextView tvTotal = bottomAppBar.findViewById(R.id.totalItemsPrice);
+//                                                    tvTotal.setText(total + "đ");
+//                                                    TextView tvNumber = bottomAppBar.findViewById(R.id.numberOfItems);
+//                                                    tvNumber.setText("" + number);
+//                                                    Bundle bundle = new Bundle();
+//                                                    bundle.putParcelableArrayList("cartItems", cartItems);
+//                                                    if (bundle == null) System.out.println("Bundle is null");
+//                                                }
+//                                            }
+//                                        }
+//                                    });
+//                        }
+//                    }
+//                }
+//            });
+//        }
     }
 
     ProgressDialog pd;

@@ -100,21 +100,23 @@ public class OrderFragment extends Fragment {
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
 
+        cart = new ArrayList<>();
         //Get arguments
-        if (getArguments()!=null) {
-            cart = new ArrayList<CartItem>();
-            if (getArguments().getParcelableArrayList("orderItems") != null)
-            cart = getArguments().getParcelableArrayList("orderItems");
-            orderMethod = getArguments().getInt("method");
-            orderID = getArguments().getString("orderID");
-            total = getArguments().getLong("total");
-            subtotal = getArguments().getLong("subtotal");
-            number = getArguments().getLong("numberOfItems");
-            address = getArguments().getString("address");
-            receiverName = getArguments().getString("receiverName");
-            receiverPhone = getArguments().getString("receiverPhone");
-            time = getArguments().getString("time");
-        }
+//        if (getArguments()!=null) {
+//            cart = new ArrayList<CartItem>();
+//            if (getArguments().getParcelableArrayList("orderItems") != null)
+//            cart = getArguments().getParcelableArrayList("orderItems");
+//            orderMethod = getArguments().getInt("method");
+//            orderID = getArguments().getString("orderID");
+//            total = getArguments().getLong("total");
+//            subtotal = getArguments().getLong("subtotal");
+//            number = getArguments().getLong("numberOfItems");
+//            address = getArguments().getString("address");
+//            receiverName = getArguments().getString("receiverName");
+//            receiverPhone = getArguments().getString("receiverPhone");
+//            time = getArguments().getString("time");
+//        }
+        orderMethod = 1;
         //Init
         readyStatusText = view.findViewById(R.id.order_readyText);
         tvName = view.findViewById(R.id.order_name);
@@ -178,7 +180,7 @@ public class OrderFragment extends Fragment {
             }
         });
 
-        db = FirebaseFirestore.getInstance();
+//        db = FirebaseFirestore.getInstance();
 //        if (cart.isEmpty())
 //        db.collection("cartItems").whereEqualTo("cartID", orderID)
 //                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

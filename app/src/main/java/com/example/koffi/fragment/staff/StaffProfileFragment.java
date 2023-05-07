@@ -95,36 +95,36 @@ public class StaffProfileFragment extends Fragment {
         TextView email = view.findViewById(R.id.staff_email);
         TextView store = view.findViewById(R.id.staff_store);
         ImageView imageView = view.findViewById(R.id.image_avatar);
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("staff").whereEqualTo("email", user.getEmail())
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot snapshot : task.getResult()) {
-                        name.setText(snapshot.getString("name"));
-                        email.setText(snapshot.getString("email"));
-                        int drawableId = view.getResources().getIdentifier(snapshot.getString("image"),
-                                "drawable", getContext().getPackageName());
-                        imageView.setImageResource(drawableId);
-                        System.out.println("here store " + snapshot.getString("store"));
-                        db.collection("stores").document(snapshot.getString("store"))
-                                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    System.out.println("here found ");
-                                    DocumentSnapshot doc = task.getResult();
-                                    store.setText(doc.getString("address"));
-                                }
-                            }
-                        });
-                    }
-                }
-            }
-        });
+//
+//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+//        FirebaseFirestore db = FirebaseFirestore.getInstance();
+//        db.collection("staff").whereEqualTo("email", user.getEmail())
+//                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    for (QueryDocumentSnapshot snapshot : task.getResult()) {
+//                        name.setText(snapshot.getString("name"));
+//                        email.setText(snapshot.getString("email"));
+//                        int drawableId = view.getResources().getIdentifier(snapshot.getString("image"),
+//                                "drawable", getContext().getPackageName());
+//                        imageView.setImageResource(drawableId);
+//                        System.out.println("here store " + snapshot.getString("store"));
+//                        db.collection("stores").document(snapshot.getString("store"))
+//                                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                                if (task.isSuccessful()) {
+//                                    System.out.println("here found ");
+//                                    DocumentSnapshot doc = task.getResult();
+//                                    store.setText(doc.getString("address"));
+//                                }
+//                            }
+//                        });
+//                    }
+//                }
+//            }
+//        });
 
         //Change Password
         changePw.setOnClickListener(new View.OnClickListener() {
@@ -155,9 +155,9 @@ public class StaffProfileFragment extends Fragment {
                 logoutBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        FirebaseAuth.getInstance().signOut();
-                        Toast.makeText(getContext(), "Đăng xuất thành công!", Toast.LENGTH_LONG).show();
-                        logOutDialog.dismiss();
+//                        FirebaseAuth.getInstance().signOut();
+//                        Toast.makeText(getContext(), "Đăng xuất thành công!", Toast.LENGTH_LONG).show();
+//                        logOutDialog.dismiss();
                         startActivity(new Intent(getActivity(), MainActivity.class));
                     }
                 });
