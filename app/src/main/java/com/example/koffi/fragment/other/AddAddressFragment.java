@@ -83,214 +83,22 @@ public class AddAddressFragment extends Fragment {
         //Home address show
         if(type.equals("Nhà")) {
             btnXoa.setVisibility(View.GONE);
-            db.collection("users").document(user.getUid()).get()
-                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                if (document != null) {
-                                    if (document.exists()) {
 
-                                        addressEdit.setText((CharSequence) document.get("Nhà.Địa chỉ"));
-                                        noteEdit.setText((((CharSequence) document.get("Nhà.Ghi chú"))));
-
-                                    }
-                                }
-                            }
-                        }
-
-                    });
         }
         //company address show
         else if(type.equals("Công ty")) {
             btnXoa.setVisibility(View.GONE);
-            db.collection("users").document(user.getUid()).get()
-                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                if (document != null) {
-                                    if (document.exists()) {
 
-                                        addressEdit.setText((CharSequence) document.get("Công ty.Địa chỉ"));
-                                        noteEdit.setText((((CharSequence) document.get("Công ty.Ghi chú"))));
-
-                                    }
-                                }
-                            }
-                        }
-
-                    });
         }
 
         //listview address show
-        else if(type.equals("editAddress"))
-        {
-            title.setText("Sửa địa chỉ");
-            db.collection("users").document(user.getUid()).collection("SaveAddress")
-                    .document(getArguments().getString("doc")).get()
-                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                if (document != null) {
-                                    if (document.exists()) {
 
-                                        addressEdit.setText((CharSequence) document.get("address"));
-                                        noteEdit.setText((((CharSequence) document.get("Ghi chú"))));
-                                        nameEdit.setText((((CharSequence) document.get("name"))));
-                                    }
-                                }
-                            }
-                        }
-
-                    });
-        }
         else
         {
             btnXoa.setVisibility(View.GONE);
         }
 
 
-        //buttonXongClick
-        btnXong.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //update home address
-                if(nameEdit.getText().toString().equals("Nhà"))
-                {
-                    if(addressEdit.getText().toString().equals(""))
-                    {
-                        Toast.makeText(getContext(), "Bạn chưa nhập địa chỉ!", Toast.LENGTH_LONG).show();
-                    }
-                    else
-                    {
-                        db.collection("users").document(user.getUid()).update(
-                                "Nhà.Địa chỉ", addressEdit.getText().toString(),
-                                "Nhà.Ghi chú",noteEdit.getText().toString()
-                        );
-                        Bundle bundle = new Bundle();
-                        bundle.putString("from",from);
-                        System.out.println("Nhìn: "+from);
-                        Navigation.findNavController(getView()).navigate(R.id.action_addAddressFragment_to_addressFragment2,bundle);
-                    }
-
-                }
-                //update company address
-                else if(nameEdit.getText().toString().equals("Công ty"))
-                    {
-                        if(addressEdit.getText().toString().equals(""))
-                        {
-                            Toast.makeText(getContext(), "Bạn chưa nhập địa chỉ!", Toast.LENGTH_LONG).show();
-                        }
-                        else {
-                            db.collection("users").document(user.getUid()).update(
-                                    "Công ty.Địa chỉ", addressEdit.getText().toString(),
-                                    "Công ty.Ghi chú",noteEdit.getText().toString()
-                            );
-                            Bundle bundle = new Bundle();
-                            bundle.putString("from",from);
-                            Navigation.findNavController(getView()).navigate(R.id.action_addAddressFragment_to_addressFragment2,bundle);
-                        }
-                    }
-                   else if(!nameEdit.getText().toString().equals("")) {
-                    //update listview address
-                    if (getArguments().getString("type").equals("editAddress")) {
-                        title.setText("Sửa địa chỉ");
-                        db.collection("users").document(user.getUid()).collection("SaveAddress")
-                                .document(getArguments().getString("doc")).update("address", addressEdit.getText().toString(),
-                                "name", nameEdit.getText().toString(), "Ghi chú", noteEdit.getText().toString());
-                        Navigation.findNavController(getView()).navigate(R.id.action_addAddressFragment_to_addressFragment2);
-                    } else {
-                        if (addressEdit.getText().toString().equals("")) {
-                            Toast.makeText(getContext(), "Bạn chưa nhập địa chỉ!", Toast.LENGTH_LONG).show();
-                        } else {
-                            Address address = new Address(nameEdit.getText().toString(), addressEdit.getText().toString());
-                            db.collection("users").document(user.getUid()).collection("SaveAddress")
-                                    .add(address).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                @Override
-                                public void onSuccess(DocumentReference documentReference) {
-                                    db.collection("users").document(user.getUid()).collection("SaveAddress")
-                                            .document(documentReference.getId()).update("Ghi chú", noteEdit.getText().toString());
-                                }
-                            });
-                            Bundle bundle = new Bundle();
-                            bundle.putString("from", from);
-                            Navigation.findNavController(getView()).navigate(R.id.action_addAddressFragment_to_addressFragment2, bundle);
-                        }
-                    }
-                }
-                        else
-                        {
-                            //add new address to listview
-
-                            if (addressEdit.getText().toString().equals("")) {
-                                Toast.makeText(getContext(), "Bạn chưa nhập địa chỉ!", Toast.LENGTH_LONG).show();
-                            } else {
-                                if (nameEdit.getText().toString().isEmpty()) {
-                                    System.out.println("noname");
-                                    String a = addressEdit.getText().toString();
-                                    String[] name = a.split(",", 2);
-                                    Address address = new Address(name[0].toString(), addressEdit.getText().toString());
-                                    db.collection("users").document(user.getUid()).collection("SaveAddress")
-                                            .add(address).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                        @Override
-                                        public void onSuccess(DocumentReference documentReference) {
-                                            db.collection("users").document(user.getUid()).collection("SaveAddress")
-                                                    .document(documentReference.getId()).update("Ghi chú", noteEdit.getText().toString());
-                                        }
-                                    });
-                                    Bundle bundle = new Bundle();
-                                    bundle.putString("from", from);
-                                    Navigation.findNavController(getView()).navigate(R.id.action_addAddressFragment_to_addressFragment2, bundle);
-                                }
-                            }
-                        }
-                }
-
-        });
-        btnXoa.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                //AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-
-                builder.setTitle("Xác nhận!");
-                builder.setMessage("Bạn chắc chắn muốn xóa?");
-
-                //Yes Button
-
-                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        db.collection("users").document(user.getUid()).collection("SaveAddress")
-                                .document(getArguments().getString("doc")).delete();
-                        Navigation.findNavController(getView()).navigate(R.id.action_addAddressFragment_to_addressFragment2);
-                        dialog.dismiss();
-                    }
-                });
-
-                //No Button
-                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        dialog.dismiss();
-
-                    }
-                });
-
-                AlertDialog alert = builder.create();
-                alert.show();
-                alert.getButton(DialogInterface.BUTTON_POSITIVE)
-                        .setTextColor(Color.parseColor("#795C34"));
-                alert.getButton(DialogInterface.BUTTON_NEGATIVE)
-                        .setTextColor(Color.parseColor("#795C34"));
-            }
-        });
 
     }
 }

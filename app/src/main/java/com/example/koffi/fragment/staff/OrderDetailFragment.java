@@ -112,8 +112,12 @@ public class OrderDetailFragment extends Fragment {
         TextView tvAddress = view.findViewById(R.id.order_tvAddress);
         TextView tvNote = view.findViewById(R.id.detail_note);
 
-        if(getArguments().getString("documentID")!=null)
-            orderID=getArguments().getString("documentID");
+        ArrayList<Topping> toppings = new ArrayList<Topping>();
+        toppings.add(new Topping("123","Trân châu hoàng kim",6000L));
+        cart.add(new CartItem("123","Cà phê",2,new Long(35000),"Upsize",toppings,"ít đường"));
+        cart.add(new CartItem("123","Cà phê",2,new Long(35000),"Upsize",toppings,"ít đường"));
+        cart.add(new CartItem("123","Cà phê",2,new Long(35000),"Upsize",toppings,"ít đường"));
+
 
         //listview
         ListView cartList = view.findViewById(R.id.orderdetail_cartList);
@@ -129,22 +133,8 @@ public class OrderDetailFragment extends Fragment {
         setListViewHeight(cartList);
         TextView tvNum = view.findViewById(R.id.order_number);
         int num[] = new int[1];
-        db.collection("cartItems").whereEqualTo("cartID", orderID)
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    num[0] = 0;
-                    for (QueryDocumentSnapshot snapshot : task.getResult()) {
-                        CartItem cartItem = snapshot.toObject(CartItem.class);
-                        num[0] += cartItem.quantity;
-                        cart.add(cartItem);
-                    }
-                    tvNum.setText("(" + num[0] + " món)");
-                    cartAdapter.notifyDataSetChanged();
-                }
-            }
-        });
+
+
         cartList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -175,110 +165,7 @@ public class OrderDetailFragment extends Fragment {
         });
 
         //setInfomation
-        if(getArguments().getString("documentID")!=null) {
-            title = view.findViewById(R.id.order_title);
-        //settype
-        if(getArguments().getString("nhanhang")!=null&&getArguments().getString("nhanhang").toString().equals("taicho"))
-        {
-            kieunhan.setText("(Tự đến lấy)");
-            tvAddress.setText("Cửa hàng:  ");
-        }
-        if(getArguments().getString("from") != null && getArguments().getString("from").equals("yes")) {
-            cancelBtn.setVisibility(View.GONE);
-            btnchangeState.setVisibility(View.GONE);
-        }
-        //Setting
-        FragmentManager fm = getParentFragmentManager();
-        int count = fm.getBackStackEntryCount();
 
-            DocumentReference docRef = db.collection("order").document(getArguments().getString("documentID"));
-            db.collection("order").addSnapshotListener(new EventListener<QuerySnapshot>() {
-                @Override
-                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                    if(error!=null)
-                    {
-                        Log.w(TAG, "Listen failed.", error);
-                        return;
-                    }
-                    for (DocumentChange dc : value.getDocumentChanges()) {
-                        Log.d(TAG, "Modified Order: " + dc.getDocument().getData());
-                    }
-                    docRef.get().addOnCompleteListener(new com.google.android.gms.tasks.OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull com.google.android.gms.tasks.Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                if (document.exists()) {
-                                    txtSubtotal.setText(document.getLong("subtotal").toString()+"đ");
-                                    Total.setText(document.getLong("total").toString()+"đ");
-                                    orderid.setText(document.getString("orderID"));
-                                    ordername.setText(document.getString("name"));
-                                    orderphone.setText(document.getString("phoneNumber"));
-                                    orderaddress.setText(document.getString("address"));
-                                    if(document.getString("deliveryNote")!=null)
-                                        if(!document.getString("deliveryNote").equals(""))
-                                            note.setText(document.getString("deliveryNote"));
-                                        long status = document.getLong("status");
-                                    if (status == 1)
-                                        state.setText("Chờ xác nhận");
-                                    else if (status == 2)
-                                        state.setText("Đang chuẩn bị");
-                                    else if (status == 3)
-                                        state.setText("Đang giao hàng");
-                                    else if (status == 4)
-                                        state.setText("Đã hoàn thành");
-                                    if (status == 1)
-                                        btnchangeState.setText("Xác nhận đơn hàng");
-                                    else if (status == 2)
-                                        btnchangeState.setText("Xác nhận chuẩn bị xong");
-                                    else if (status == 3)
-                                        btnchangeState.setText("Xác nhận đã giao");
-                                    if (status == 5) {
-                                        btnchangeState.setVisibility(View.GONE);
-                                        cancelBtn.setVisibility(View.GONE);
-                                        state.setText("Đã hủy");
-                                        tvNote.setText("Lý do hủy: ");
-                                    }
-                                    btnchangeState.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View view) {
-                                            if (document.getLong("status") == 1) {
-                                                Toast.makeText(Total.getContext(), "Đã xác nhận đơn hàng!", Toast.LENGTH_LONG).show();
-                                                docRef.update("confirmTime", sdf.format(new Date()));
-                                                Navigation.findNavController(getView()).popBackStack();
-                                            }
-                                            else
-                                                if(document.getLong("status")==2) {
-                                                    Toast.makeText(Total.getContext(), "Xác nhận chuẩn bị xong!", Toast.LENGTH_LONG).show();
-                                                    docRef.update("serveTime", sdf.format(new Date()));
-                                                    Navigation.findNavController(getView()).popBackStack();
-                                                }
-                                           else if (document.getLong("status") == 3) {
-                                                    Toast.makeText(Total.getContext(), "Xác nhận đã giao hàng!", Toast.LENGTH_LONG).show();
-                                                    docRef.update("deliTime", sdf.format(new Date()));
-                                                    Navigation.findNavController(getView()).popBackStack();
-                                                }
-                                            docRef.update("status",document.getLong("status")+1);
-                                        }
-                                    });
-                                    //Cancel order
-                                    cancelBtn.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View view) {
-                                            docID=document.getId().toString();
-                                            CancelOrderDialog cancelDialog = new CancelOrderDialog(getContext());
-                                            cancelDialog.show();
-                                        }
-                                    });
-
-                                }
-                            }
-                        }
-                    });
-                }
-            });
-
-        }
 
 
     }

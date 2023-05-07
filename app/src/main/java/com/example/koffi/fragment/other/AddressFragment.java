@@ -280,55 +280,55 @@ public class AddressFragment extends Fragment {
         });
 
         //Show address
-        if (user == null) {
-            startActivity(new Intent(getContext(), LoginActivity.class));
-            Toast.makeText(getContext(), "Bạn chưa đăng nhâp. Mời bạn đăng nhập!", Toast.LENGTH_LONG).show();
-        } else {
-            db.collection("users").document(user.getUid()).get()
-                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                if (document != null) {
-                                    if (document.exists()) {
-
-                                        if (document.get("Nhà.Địa chỉ") != null)
-                                            addressHome.setText((CharSequence) document.get("Nhà.Địa chỉ"));
-                                        if (document.get("Công ty.Địa chỉ") != null)
-                                            addressCompany.setText((CharSequence) document.get("Công ty.Địa chỉ"));
-
-                                    }
-                                }
-                            }
-                        }
-                    });
-            addressList=new ArrayList<Address>();
-            adapter=new AddressAdapter(getContext(),addressList);
-            listView.setAdapter(adapter);
-            addressList.clear();
-            idListAddress.clear();
-            adapter.notifyDataSetChanged();
-            db.collection("users").document(user.getUid()).collection("SaveAddress")
-                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-
-                            addressList.add(new Address(document.getString("name"), document.getString("address")));
-                            adapter=new AddressAdapter(getContext(),addressList);
-                            idListAddress.add(document.getId().toString());
-                            listView.setAdapter(adapter);
-                            setListViewHeight(listView);
-                            adapter.notifyDataSetChanged();
-
-                        }
-                    }
-                }
-            });
-
-        }
+//        if (user == null) {
+//            startActivity(new Intent(getContext(), LoginActivity.class));
+//            Toast.makeText(getContext(), "Bạn chưa đăng nhâp. Mời bạn đăng nhập!", Toast.LENGTH_LONG).show();
+//        } else {
+//            db.collection("users").document(user.getUid()).get()
+//                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                            if (task.isSuccessful()) {
+//                                DocumentSnapshot document = task.getResult();
+//                                if (document != null) {
+//                                    if (document.exists()) {
+//
+//                                        if (document.get("Nhà.Địa chỉ") != null)
+//                                            addressHome.setText((CharSequence) document.get("Nhà.Địa chỉ"));
+//                                        if (document.get("Công ty.Địa chỉ") != null)
+//                                            addressCompany.setText((CharSequence) document.get("Công ty.Địa chỉ"));
+//
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    });
+//            addressList=new ArrayList<Address>();
+//            adapter=new AddressAdapter(getContext(),addressList);
+//            listView.setAdapter(adapter);
+//            addressList.clear();
+//            idListAddress.clear();
+//            adapter.notifyDataSetChanged();
+//            db.collection("users").document(user.getUid()).collection("SaveAddress")
+//                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                @Override
+//                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                    if (task.isSuccessful()) {
+//                        for (QueryDocumentSnapshot document : task.getResult()) {
+//
+//                            addressList.add(new Address(document.getString("name"), document.getString("address")));
+//                            adapter=new AddressAdapter(getContext(),addressList);
+//                            idListAddress.add(document.getId().toString());
+//                            listView.setAdapter(adapter);
+//                            setListViewHeight(listView);
+//                            adapter.notifyDataSetChanged();
+//
+//                        }
+//                    }
+//                }
+//            });
+//
+//        }
     }
     public void setListViewHeight(ListView listview) {
         ListAdapter listadp = listview.getAdapter();
